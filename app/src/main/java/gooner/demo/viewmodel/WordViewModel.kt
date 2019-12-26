@@ -9,16 +9,20 @@ import gooner.demo.repo.WordRepository
 
 class WordViewModel(application: Application) : AndroidViewModel(application) {
 
-    lateinit var mRepository: WordRepository
-    lateinit var mAllWords: LiveData<List<Word>>
+    var mRepository: WordRepository
 
     init {
         mRepository = WordRepository(application)
-        mAllWords = mRepository.mAllWords
     }
 
     fun insert(word: Word) {
         mRepository.insert(word)
+    }
+
+    fun getAllWords(): LiveData<List<Word>> = mRepository.getAllWords()
+
+    fun deleteAllWord() {
+        mRepository.deleteAll()
     }
 
 }

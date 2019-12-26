@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -24,8 +26,8 @@ android {
 
 ext {
     lib_version = [
-            roomVersion         : "1.1.1",
-            archLifecycleVersion: "1.1.1"
+            roomVersion         : "2.0.0",
+            archLifecycleVersion: "2.0.0"
     ]
 }
 
@@ -41,13 +43,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Room components
-    implementation 'androidx.room:room-runtime:2.0.0'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    implementation "androidx.room:room-runtime:$lib_version.roomVersion"
+    kapt "androidx.room:room-compiler:$lib_version.roomVersion"
     androidTestImplementation 'androidx.room:room-testing:2.0.0'
 
     // Lifecycle components
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    implementation "androidx.lifecycle:lifecycle-extensions:$lib_version.archLifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lib_version.archLifecycleVersion"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
 }

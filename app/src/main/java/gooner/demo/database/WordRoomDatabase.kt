@@ -15,7 +15,6 @@ abstract class WordRoomDatabase : RoomDatabase() {
 
     abstract fun wordDao(): WordDao
 
-
     companion object {
 
         @JvmField
@@ -42,10 +41,6 @@ abstract class WordRoomDatabase : RoomDatabase() {
         }
     }
 
-
-    fun doSt() {
-
-    }
 
 }
 
