@@ -9,8 +9,8 @@ import gooner.demo.repo.WordRepository
 
 class WordViewModel(application: Application) : AndroidViewModel(application) {
 
-    lateinit var mRepository: WordRepository
-    lateinit var mAllWords: LiveData<List<Word>>
+    var mRepository: WordRepository
+    var mAllWords: LiveData<List<Word>>
 
     init {
         mRepository = WordRepository(application)
