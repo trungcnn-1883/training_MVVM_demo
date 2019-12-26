@@ -11,19 +11,17 @@ class WordRepository(application: Application) {
 
     lateinit var mWordDao: WordDao
     lateinit var mAllWords: LiveData<List<Word>>
-    lateinit var mInsertAysncTask: InsertAysncTask
 
     init {
         WordRoomDatabase.getDatabase(application)?.let {
             mWordDao = it.wordDao()
             mAllWords = mWordDao.getAllWords()
-            mInsertAysncTask = InsertAysncTask(mWordDao)
         }
 
     }
 
     fun insert(word: Word) {
-        mInsertAysncTask.execute(word)
+        InsertAysncTask(mWordDao).execute(word)
     }
 
     class InsertAysncTask(var mAsyncTaskDao: WordDao) : AsyncTask<Word, Void, Void>() {
