@@ -24,6 +24,12 @@ class WordRepository(application: Application) {
         InsertAysncTask(mWordDao).execute(word)
     }
 
+    fun deleteAll() {
+        DeleteAysncTask(mWordDao).execute()
+    }
+
+    fun findWord(word: String) = mWordDao.findWord(word)
+
     class InsertAysncTask(var mAsyncTaskDao: WordDao) : AsyncTask<Word, Void, Void>() {
 
         override fun doInBackground(vararg params: Word?): Void? {
@@ -32,5 +38,14 @@ class WordRepository(application: Application) {
         }
 
     }
+
+    class DeleteAysncTask(var mAsyncTaskDao: WordDao) : AsyncTask<Word, Void, Void>() {
+
+        override fun doInBackground(vararg params: Word?): Void? {
+            mAsyncTaskDao.deleteAll()
+            return null
+        }
+    }
+
 
 }

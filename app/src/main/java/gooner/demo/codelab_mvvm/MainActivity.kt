@@ -4,12 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import gooner.demo.adapter.WordListAdapter
+import gooner.demo.codelab_mvvm.MainActivity.Companion.NEW_WORD_ACTIVITY_REQUEST_CODE
 import gooner.demo.entity.Word
 import gooner.demo.viewmodel.WordViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,9 +39,31 @@ class MainActivity : AppCompatActivity() {
 
         mWordViewModel = ViewModelProviders.of(this).get(WordViewModel::class.java)
 
-        mWordViewModel.mAllWords.observe(this, Observer<List<Word>> { listWords ->
-            mWordListAdapter.setWords(listWords)
-        })
+        mWordViewModel
+            .mAllWords.observe(this, Observer<List<Word>> { listWords ->
+                mWordListAdapter.setWords(listWords)
+            })
+
+        mWordViewModel.mAllSide.observe(this, Observer<List<String>> {
+                it?.let {
+                    Log.d("AllSide", it.toString())
+                }
+            })
+
+//        mWordViewModel.mNumberOfItem.observe(this, Observer<Int> {
+//                it?.let {
+//                    Log.d("AllSide", it.toString())
+//                }
+//            })
+
+        mWordViewModel.mListWord.observe(this, Observer<List<Word>> {
+                it?.let {
+                    it.forEach {
+                        Log.d("AllSide", "ListWord: " + it.toString())
+                    }
+                }
+            })
+
 
         fab.setOnClickListener {
             Intent(this@MainActivity, NewWordActivity::class.java).also { intent ->
@@ -47,38 +71,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//        plusMinus(arrayOf(3, 4, -4, 5, -3, 0))
     }
-
-//    fun plusMinus(arr: Array<Int>) {
-//
-//        var positiveCounter = 0
-//        var nagativeCounter = 0
-//        var zeroCounter = 0
-//
-//        for (i in 0..arr.size - 1) {
-//            if (arr[i] > 0) {
-//                positiveCounter++
-//            } else if (arr[i] < 0) {
-//                nagativeCounter++
-//            } else zeroCounter++
-//        }
-//
-//        print(positiveCounter / (arr.size - 1))
-//        print(nagativeCounter / (arr.size - 1))
-//        print(zeroCounter / (arr.size - 1))
-//
-//    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == NEW_WORD_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             data?.apply {
-                getStringExtra(NewWordActivity.EXTRA_REPLY)?.apply {
-                    val word = Word(this)
-                    mWordViewModel.insert(word)
+                val inputWord = getStringExtra(NewWordActivity.EXTRA_REPLY)
+                try {
+                    inputWord?.apply {
+                        val word = Word(inputWord.split(" ").get(0), inputWord.split(" ").get(1))
+                        mWordViewModel.insert(word)
+                        mWordViewModel.setWordToGet(inputWord.split(" ").get(1))
+                    }
+                } catch (exp: Exception) {
+
                 }
+
+
             }
         } else {
             Toast.makeText(this@MainActivity, R.string.empty_not_saved, Toast.LENGTH_SHORT).show()
