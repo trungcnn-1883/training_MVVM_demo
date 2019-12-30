@@ -14,7 +14,7 @@ import android.os.AsyncTask
 import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 
 
-@Database(entities = [Word::class], version = 1, exportSchema = false)
+@Database(entities = [Word::class], version = 5, exportSchema = false)
 abstract class WordRoomDatabase : RoomDatabase() {
 
     abstract fun wordDao(): WordDao
@@ -76,7 +76,7 @@ abstract class WordRoomDatabase : RoomDatabase() {
                     it.deleteAll()
 
                     for (i in 0..words.size - 1) {
-                        val word = Word(words[i])
+                        val word = Word(words[i], "Math")
                         it.insert(word)
                     }
                 }

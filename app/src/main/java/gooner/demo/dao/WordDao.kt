@@ -19,4 +19,7 @@ interface WordDao {
     @Query("SELECT * FROM word_table ORDER BY word ASC")
     fun getAllWords(): LiveData<List<Word>>
 
+    @Query("SELECT * FROM word_table WHERE side = :side")
+    fun findWord(side: String) : LiveData<List<Word>>
+
 }
